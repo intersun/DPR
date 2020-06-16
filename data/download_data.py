@@ -344,7 +344,11 @@ def main():
 
     args = parser.parse_args()
     if args.resource:
-        download(args.resource, args.output_dir)
+        if args.resource == 'all':
+            for resource in RESOURCES_MAP:
+                download(resource, args.output_dir)
+        else:
+            download(args.resource, args.output_dir)
     else:
         print('Please specify resource value. Possible options are:')
         for k, v in RESOURCES_MAP.items():

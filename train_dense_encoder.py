@@ -492,9 +492,7 @@ def _do_biencoder_fwd_pass(model: nn.Module, input: BiEncoderBatch, tensorizer: 
     return loss, is_correct
 
 
-def main():
-    parser = argparse.ArgumentParser()
-
+def train_dpr_parser(parser):
     add_encoder_params(parser)
     add_training_params(parser)
     add_tokenizer_params(parser)
@@ -505,7 +503,7 @@ def main():
 
     parser.add_argument("--global_loss_buf_sz", type=int, default=150000,
                         help='Buffer size for distributed mode representations al gather operation. \
-                                Increase this if you see errors like "encoded data exceeds max_size ..."')
+                                    Increase this if you see errors like "encoded data exceeds max_size ..."')
 
     parser.add_argument("--fix_ctx_encoder", action='store_true')
     parser.add_argument("--shuffle_positive_ctx", action='store_true')
@@ -534,6 +532,12 @@ def main():
     parser.add_argument("--val_av_rank_max_qs", type=int, default=10000,
                         help="Av.rank validation: max num of questions")
     parser.add_argument('--checkpoint_file_name', type=str, default='dpr_biencoder', help="Checkpoints file prefix")
+    return parser
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser = train_dpr_parser(parser)
 
     args = parser.parse_args()
 
